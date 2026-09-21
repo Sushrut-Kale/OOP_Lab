@@ -6,6 +6,7 @@
 | **PRN** | 202501110147 |
 | **Class / Batch** | SY B2 CSE (AIML) |
 | **Subject** | Problem Solving Using OOP (C++) |
+| **Repository** | https://github.com/Sushrut-Kale/OOP_Lab |
 
 This repository contains the C++ programs for the first three practical assignments, along with how to compile them, sample input/output and a short summary of the concepts used.
 
@@ -15,10 +16,10 @@ This repository contains the C++ programs for the first three practical assignme
 
 ```
 .
-├── oopsass1.cpp     # Assignment 1 – Constructor and Destructor
-├── oopsass2.cpp     # Assignment 2 – Constructor Types
-├── oopsass3.cpp     # Assignment 3 – Operator Overloading
-└── README.md
+├── opp1.cpp     # Assignment 1 – Constructor and Destructor
+├── opp2.cpp     # Assignment 2 – Constructor Types
+├── opp3.cpp     # Assignment 3 – Operator Overloading
+└── readme.md
 ```
 
 ## Requirements
@@ -30,22 +31,22 @@ This repository contains the C++ programs for the first three practical assignme
 
 ```bash
 # Assignment 1
-g++ oopsass1.cpp -o oopsass1 && ./oopsass1
+g++ opp1.cpp -o opp1 && ./opp1
 
 # Assignment 2
-g++ oopsass2.cpp -o oopsass2 && ./oopsass2
+g++ opp2.cpp -o opp2 && ./opp2
 
 # Assignment 3
-g++ oopsass3.cpp -o oopsass3 && ./oopsass3
+g++ opp3.cpp -o opp3 && ./opp3
 ```
 
-On Windows (PowerShell / CMD) run the executable as `oopsass1.exe` instead of `./oopsass1`.
+On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
 
 ---
 
 ## Assignment 1 – Classes, Objects, Constructor and Destructor
 
-**File:** `oopsass1.cpp`
+**File:** `opp1.cpp`
 
 **Problem statement:** Create a class `Student` with the data members name, roll number and marks. Use a constructor to initialise the object, member functions to accept and display the data, and a destructor that runs when the object is destroyed. Demonstrate the order in which constructors and destructors are called.
 
@@ -87,7 +88,7 @@ Destructor called for Sushrut Kale.
 
 ## Assignment 2 – Constructor Types
 
-**File:** `oopsass2.cpp`
+**File:** `opp2.cpp`
 
 **Problem statement:** Implement various types of constructors and member functions. A `Student` class (name, roll number, marks) has a default, a parameterized and a copy constructor, together with functions to display the details, check the result and calculate the grade.
 
@@ -154,7 +155,7 @@ Program Ended.
 
 ## Assignment 3 – Operator Overloading
 
-**File:** `oopsass3.cpp`
+**File:** `opp3.cpp`
 
 **Problem statement:** Write a program on operator overloading using default and parameterized constructors. A `Complex` class overloads the `+`, `-` and `*` operators so that two complex numbers can be added, subtracted and multiplied like built-in types.
 

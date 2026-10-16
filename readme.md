@@ -8,7 +8,7 @@
 | **Subject** | Problem Solving Using OOP (C++) |
 | **Repository** | https://github.com/Sushrut-Kale/OOP_Lab |
 
-This repository contains the C++ programs for the first three practical assignments, along with how to compile them, sample input/output and a short summary of the concepts used.
+This repository contains the C++ programs for the practical assignments, along with how to compile them, sample input/output and a short summary of the concepts used.
 
 ---
 
@@ -19,6 +19,7 @@ This repository contains the C++ programs for the first three practical assignme
 ├── opp1.cpp     # Assignment 1 – Constructor and Destructor
 ├── opp2.cpp     # Assignment 2 – Constructor Types
 ├── opp3.cpp     # Assignment 3 – Operator Overloading
+├── opp4.cpp     # Assignment 4 – Dynamic Memory Allocation (new & delete)
 └── readme.md
 ```
 
@@ -38,6 +39,9 @@ g++ opp2.cpp -o opp2 && ./opp2
 
 # Assignment 3
 g++ opp3.cpp -o opp3 && ./opp3
+
+# Assignment 4
+g++ opp4.cpp -o opp4 && ./opp4
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -195,6 +199,49 @@ After Multiplication (*) : -7 + 22i
 
 ---
 
+## Assignment 4 – Dynamic Memory Allocation
+
+**File:** `opp4.cpp`
+
+**Problem statement:** Write a program to manage student marks using dynamic memory allocation in C++. Allocate an array of `Student` records at runtime based on user input using `new[]`, and allocate a single variable for calculating class average using `new`. Calculate the total marks, find the class topper, display a student report, and release all dynamically allocated memory using `delete[]` and `delete` while setting pointers to `nullptr` to avoid dangling pointers.
+
+**Concepts used:**
+
+- Dynamic memory allocation on the heap: `new` (single object) and `new[]` (array of objects)
+- Deallocation: `delete` (single object) and `delete[]` (array of objects)
+- Pointer hygiene: avoiding dangling pointers (`students = nullptr; average = nullptr;`)
+- Structure `struct Student` holding student data members (`name`, `rollNumber`, `marks`)
+- Runtime array sizing based on user input with input validation (`n <= 0`)
+- Type casting with `static_cast<double>` for accurate floating-point average calculation
+
+**Sample run:**
+
+```
+=== Student Marks Management ===
+Enter the number of students: 2
+
+Student 1
+  Enter name (single word): Sushrut
+  Enter roll number: 101
+  Enter marks (out of 100): 88
+
+Student 2
+  Enter name (single word): Aarav
+  Enter roll number: 102
+  Enter marks (out of 100): 95
+
+=== Student Report ===
+Roll 101 | Sushrut | Marks: 88
+Roll 102 | Aarav | Marks: 95
+Total marks   : 183
+Average marks : 91.5
+Topper        : Aarav (95)
+
+Dynamic memory released successfully.
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -208,6 +255,9 @@ After Multiplication (*) : -7 + 22i
 | 3 | Positive parts | (2+3i), (4+5i) | Pass |
 | 3 | Negative imaginary part | (5-2i), (3+4i) | Pass |
 | 3 | Decimal and negative values | (-1.5+2.5i), (1-1i) | Pass |
+| 4 | Array allocation & topper calculation | 2 students: Sushrut (88), Aarav (95) | Pass (Topper Aarav) |
+| 4 | Input validation for invalid count | n = 0 | Pass (Invalid number of students!) |
+| 4 | Memory deallocation | new[], new, delete[], delete | Pass (Memory freed, pointers nulled) |
 
 ## Notes
 

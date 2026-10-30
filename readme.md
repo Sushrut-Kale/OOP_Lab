@@ -26,6 +26,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp8.cpp     # Assignment 8 – Exception Handling (try, throw, catch)
 ├── opp9.cpp     # Assignment 9 – std::move() and Move Semantics
 ├── opp10.cpp    # Assignment 10 – Function and Class Templates
+├── opp11.cpp    # Assignment 11 – STL: List and Vector Containers
 └── readme.md
 ```
 
@@ -66,6 +67,9 @@ g++ -std=c++11 opp9.cpp -o opp9 && ./opp9
 
 # Assignment 10
 g++ opp10.cpp -o opp10 && ./opp10
+
+# Assignment 11
+g++ opp11.cpp -o opp11 && ./opp11
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -560,6 +564,50 @@ Stack is empty
 
 ---
 
+## Assignment 11 – Standard Template Library (STL): List and Vector
+
+**File:** `opp11.cpp`
+
+**Problem statement:** Implement a program demonstrating sequential containers from the C++ Standard Template Library (STL):
+- **Part A (`std::list`):** A doubly-linked list container demonstrating bidirectional insertion (`push_front`, `push_back`), random position insertion (`insert`), member sorting (`sort()`), reversal (`reverse()`), value-based removal (`remove()`), bidirectional deletion (`pop_front`, `pop_back`), and iterator traversal.
+- **Part B (`std::vector`):** A contiguous dynamic array container demonstrating dynamic appending (`push_back`), fast subscript and bounds-checked element access (`[]`, `at()`), STL algorithm integration (`std::sort`, `std::reverse`, `std::find`), positional insertion and erasure (`insert`, `erase`), size and capacity tracking, element summation, and clearing (`clear()`, `empty()`).
+
+**Concepts used:**
+
+- STL sequential container models: dynamic array (`std::vector`) vs doubly linked list (`std::list`).
+- Container iterators (`iterator`, `const_iterator`) and pointer arithmetic.
+- STL generic algorithms from `<algorithm>` (`std::sort`, `std::reverse`, `std::find`).
+- Trade-offs: Random access $O(1)$ in `vector` vs constant-time insertion/deletion $O(1)$ anywhere in `list`.
+
+**Sample run:**
+
+```
+===== PART A: list class as a container =====
+After push_back / push_front: 20 30 10 50 
+Size = 4
+Front = 20, Back = 50
+After sort(): 10 20 30 50 
+After reverse(): 50 30 20 10 
+After insert(40) at position 2: 50 40 30 20 10 
+After remove(20): 50 40 30 10 
+After pop_front(), pop_back(): 40 30 
+Final size = 2
+
+===== PART B: vector class as a container =====
+After push_back: 25 5 15 10 
+Size = 4, v[1] = 5, v.at(2) = 15
+After sort(): 5 10 15 25 
+After reverse(): 25 15 10 5 
+Element 10 found at index 2
+After insert(20) at index 1: 25 20 15 10 5 
+After erase() of first element: 20 15 10 5 
+After pop_back(): 20 15 10 
+Sum of elements = 45
+After clear(): size = 0, empty = Yes
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -605,6 +653,9 @@ Stack is empty
 | 10 | Multiple type template showPair() | (1, "Apple") and (2.5, 'A') | Pass (Heterogeneous pairs displayed) |
 | 10 | Class template Calculator<T> | Calculator<int> and Calculator<double> | Pass (Arithmetic operations verified) |
 | 10 | Class template Stack<T> | Push 10, 20, 30 and pop | Pass (LIFO order 30, 20, 10, stack empty) |
+| 11 | std::list operations | push_front, push_back, sort, reverse, insert, remove | Pass (Final size 2, elements: 40 30) |
+| 11 | std::vector access & algorithms | push_back, at(), sort, reverse, find | Pass (Element 10 found at index 2) |
+| 11 | std::vector insert, erase, sum | insert(1, 20), erase(begin), sum elements | Pass (Sum 45, clear verified) |
 
 
 ## Notes

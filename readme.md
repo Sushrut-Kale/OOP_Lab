@@ -21,6 +21,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp3.cpp     # Assignment 3 – Operator Overloading
 ├── opp4.cpp     # Assignment 4 – Dynamic Memory Allocation (new & delete)
 ├── opp5.cpp     # Assignment 5 – this Pointer, Inline & Static Members, Friend Class
+├── opp6.cpp     # Assignment 6 – Types of Inheritance in C++
 └── readme.md
 ```
 
@@ -46,6 +47,9 @@ g++ opp4.cpp -o opp4 && ./opp4
 
 # Assignment 5
 g++ opp5.cpp -o opp5 && ./opp5
+
+# Assignment 6
+g++ opp6.cpp -o opp6 && ./opp6
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -290,6 +294,70 @@ Total accounts: 2
 
 ---
 
+## Assignment 6 – Types of Inheritance in C++
+
+**File:** `opp6.cpp`
+
+**Problem statement:** Implement a comprehensive C++ program demonstrating all six types of inheritance:
+- **Single Inheritance:** A derived class inheriting from a single base class (`Student` derived from `Person`).
+- **Multiple Inheritance:** A derived class inheriting from more than one base class (`Result` derived from `Academics` and `Sports`).
+- **Multilevel Inheritance:** A class hierarchy spanning three levels (`Director` derived from `Manager`, which derives from `Employee`).
+- **Hierarchical Inheritance:** Multiple derived classes inheriting from a common base class (`Dog` and `Cat` derived from `Animal`).
+- **Hybrid Inheritance:** A combination of two or more distinct inheritance types (`ScoreCard` combining multilevel inheritance from `StudentData` -> `TestMarks` and multiple inheritance with `Extracurricular`).
+- **Multipath Inheritance:** A diamond inheritance structure (`UniversityMember` -> `Faculty` & `Researcher` -> `Professor`) resolved without ambiguity using `virtual` base classes.
+
+**Concepts used:**
+
+- Access specifiers (`protected`, `public`) and constructor member initializer lists (`Base(args)`).
+- Destructor invocation order (derived destructors run before base destructors).
+- The Diamond Problem: Ambiguity and duplicated base class subobjects caused by multiple inheritance paths from a common base class.
+- Virtual Base Classes (`virtual public Base`): Ensures that only a single shared instance of the base class is inherited by the most-derived class.
+- Most-derived class responsibility: The most-derived class (`Professor`) directly initializes the virtual base class (`UniversityMember`).
+
+**Sample run:**
+
+```
+=== Demonstrating All 6 Types of Inheritance in C++ ===
+
+--- 1. Single Inheritance ---
+Name: Rahul
+Role: Student
+Student destructor called for Rahul
+Person destructor called for Rahul
+
+--- 2. Multiple Inheritance ---
+Academic Marks: 85
+Sports Score: 90
+Total Score: 175
+
+--- 3. Multilevel Inheritance ---
+Employee Name: Amit
+Department: Operations
+Designation: Managing Director
+
+--- 4. Hierarchical Inheritance ---
+Animal eats food
+Dog barks
+Animal eats food
+Cat meows
+
+--- 5. Hybrid Inheritance ---
+Roll Number: 101
+Part 1 Marks: 45
+Part 2 Marks: 48
+Extracurricular Score: 18
+Grand Total: 111
+
+--- 6. Multipath Inheritance (Diamond Problem) ---
+Professor Name: Dr. Sharma
+University: MIT Pune
+Department: Computer Science
+Research Area: Artificial Intelligence
+```
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -310,6 +378,12 @@ Total accounts: 2
 | 5 | Insufficient balance validation | Rahul withdraws 10000 with balance 8000 | Pass (Error message shown) |
 | 5 | Static member tracking | Account creation & deletion count | Pass (0 -> 2 -> 2) |
 | 5 | Friend class access & interest calculation | Auditor audits & adds 4% interest | Pass (Direct access to private fields, balance Rs. 7072) |
+| 6 | Single inheritance & destructor order | Student Rahul | Pass (Base & derived displayed, destructors in reverse) |
+| 6 | Multiple inheritance score aggregation | Academics 85, Sports 90 | Pass (Total score 175 calculated) |
+| 6 | Multilevel hierarchy across 3 tiers | Director Amit, Operations | Pass (Employee -> Manager -> Director verified) |
+| 6 | Hierarchical inheritance | Animal eats, Dog barks, Cat meows | Pass (Distinct derived behaviors from shared base) |
+| 6 | Hybrid inheritance (Multilevel + Multiple) | ScoreCard Roll 101, 45, 48, 18 | Pass (Grand total 111 verified) |
+| 6 | Multipath inheritance (Diamond problem) | Professor Dr. Sharma, MIT Pune | Pass (Virtual base class prevents duplicate UniversityMember) |
 
 ## Notes
 

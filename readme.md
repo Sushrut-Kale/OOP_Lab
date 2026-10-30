@@ -23,6 +23,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp5.cpp     # Assignment 5 – this Pointer, Inline & Static Members, Friend Class
 ├── opp6.cpp     # Assignment 6 – Types of Inheritance in C++
 ├── opp7.cpp     # Assignment 7 – Polymorphism (Compile-Time and Run-Time)
+├── opp8.cpp     # Assignment 8 – Exception Handling (try, throw, catch)
 └── readme.md
 ```
 
@@ -54,6 +55,9 @@ g++ opp6.cpp -o opp6 && ./opp6
 
 # Assignment 7
 g++ opp7.cpp -o opp7 && ./opp7
+
+# Assignment 8
+g++ opp8.cpp -o opp8 && ./opp8
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -400,6 +404,70 @@ Payment base destructor called
 
 ---
 
+## Assignment 8 – Exception Handling in C++
+
+**File:** `opp8.cpp`
+
+**Problem statement:** Implement a bank account management system demonstrating robust runtime exception handling using `try`, `throw`, and `catch` blocks with standard exceptions (`std::invalid_argument` and `std::runtime_error`):
+- Throw `std::invalid_argument` if the withdrawal amount entered is zero or negative (`amount <= 0`).
+- Throw `std::runtime_error` if the withdrawal amount exceeds the current account balance (`amount > balance`).
+- Catch both exceptions by reference (`const exception&`), display descriptive error messages using `.what()`, and ensure the account balance remains consistent and unaffected by rejected transactions.
+
+**Concepts used:**
+
+- Exception handling mechanism (`try`, `throw`, `catch`).
+- Standard exception hierarchy from `<stdexcept>`:
+  - `std::invalid_argument`: Derived from `std::logic_error` representing invalid input arguments.
+  - `std::runtime_error`: Represents errors detectable only at execution time.
+- Exception object inspection using member function `e.what()`.
+- State consistency: Ensuring transactions are atomic (balance is only modified upon full validation).
+- Destructor cleanup on normal termination or scope exit.
+
+**Sample runs:**
+
+**Case 1: Successful Withdrawal**
+```
+===== BANKING SYSTEM =====
+Current Balance: Rs. 5000
+
+Enter amount to withdraw: Rs. 2000
+Withdrawal Successful!
+Withdrawn Amount: Rs. 2000
+Remaining Balance: Rs. 3000
+
+Final Account Details:
+Current Balance: Rs. 3000
+Bank Account Object Destroyed.
+```
+
+**Case 2: Invalid Amount (Zero / Negative)**
+```
+===== BANKING SYSTEM =====
+Current Balance: Rs. 5000
+
+Enter amount to withdraw: Rs. -500
+Exception: Invalid amount! Enter a positive amount.
+
+Final Account Details:
+Current Balance: Rs. 5000
+Bank Account Object Destroyed.
+```
+
+**Case 3: Insufficient Balance**
+```
+===== BANKING SYSTEM =====
+Current Balance: Rs. 5000
+
+Enter amount to withdraw: Rs. 8000
+Exception: Insufficient balance! Withdrawal denied.
+
+Final Account Details:
+Current Balance: Rs. 5000
+Bank Account Object Destroyed.
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -431,6 +499,10 @@ Payment base destructor called
 | 7 | Run-time dispatch via base pointer (UPI) | Payment* -> UPI object | Pass ("Payment made using UPI.") |
 | 7 | Run-time dispatch via base pointer (CreditCard) | Payment* -> CreditCard object | Pass ("Payment made using Credit Card.") |
 | 7 | Virtual destructor invocation | UPI & CreditCard destructors | Pass (Derived and base destructors invoked cleanly in reverse) |
+| 8 | Valid withdrawal transaction | Withdrawal amount Rs. 2000 from Rs. 5000 | Pass (Balance updated to Rs. 3000) |
+| 8 | Zero or negative amount validation | Withdrawal amount Rs. -500 | Pass (invalid_argument caught, balance unchanged) |
+| 8 | Insufficient balance validation | Withdrawal amount Rs. 8000 from Rs. 5000 | Pass (runtime_error caught, balance unchanged) |
+| 8 | Object destruction and state consistency | Destructor on exit | Pass (Bank Account Object Destroyed) |
 
 ## Notes
 

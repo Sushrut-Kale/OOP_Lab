@@ -348,43 +348,48 @@ Account information shown
 ```
 ---
 
-## Assignment 7 – Polymorphism (Compile-Time and Run-Time)
+## Assignment 7 – Polymorphism
 
 **File:** `opp7.cpp`
 
-**Problem statement:** Implement a C++ program demonstrating both forms of polymorphism:
-- **Compile-Time Polymorphism (Static Binding):** Function overloading in a `Calculator` class providing multiple definitions of `add()` differing in parameter count (2 integers vs 3 integers) and parameter types (`int` vs `float`), resolved at compile time.
-- **Run-Time Polymorphism (Dynamic Binding):** Function overriding using a base class `Payment` with a `virtual void makePayment()` function and a `virtual` destructor, overridden in derived classes `UPI` and `CreditCard`. Base class pointers (`Payment*`) dynamically dispatch calls to the appropriate derived class method at runtime based on the actual object being pointed to.
+**Problem statement:** Implement a C++ program demonstrating compile-time and runtime polymorphism:
+- **Compile-Time Polymorphism:**
+  - *Function Overloading:* Overloaded `add()` in a `Calculator` class handling 2 integers, 2 doubles, and 3 integers.
+  - *Operator Overloading:* Overloaded `+` operator in a `Complex` class to add two complex numbers directly (`c1 + c2`).
+- **Runtime Polymorphism:**
+  - Base class `Shape` with `virtual double area() const`, `virtual void show() const`, and a `virtual` destructor.
+  - Derived classes `Circle`, `Rectangle`, and `Triangle` overriding `area()` and `show()`.
+  - Base class pointer array (`Shape* shapes[4]`) dynamically invoking the appropriate derived methods, followed by virtual destructor cleanup via `delete`.
 
 **Concepts used:**
 
-- Static binding / early binding: Compiler selects the overloaded function based on argument types and count.
-- Dynamic binding / late binding: Virtual function mechanism with dynamic dispatch via virtual method table (`vptr`/`vtbl`).
-- Keywords `virtual` and `override`: `virtual` enables polymorphic behavior; `override` guarantees compile-time verification of signature compatibility.
-- Virtual destructors: Ensures derived class destructors are properly invoked when objects are managed through base class pointers.
-- Unified interface: Manipulating multiple heterogeneous derived objects through a common base pointer (`Payment*`).
+- Function overloading resolved statically at compile time based on parameter signatures.
+- Operator overloading extending `+` operator syntax to user-defined class objects.
+- Virtual functions and dynamic binding via virtual method tables (`vptr`/`vtbl`).
+- Virtual destructor: Ensures derived class destructors run when deleting objects via base pointers.
+- Polymorphic array processing: Unified manipulation of diverse derived objects through base class pointers.
 
 **Sample run:**
 
 ```
-=== Demonstrating Polymorphism in C++ ===
+===== Compile-time Polymorphism =====
 
---- Compile-Time Polymorphism (Function Overloading) ---
-Addition of 2 integers (10 + 20)      : 30
-Addition of 2 float numbers (5.5 + 4.5): 10
-Addition of 3 integers (10 + 20 + 30)  : 60
+-- Function Overloading --
+add(10, 20) = 30
+add(2.5, 3.5) = 6
+add(1, 2, 3) = 6
 
---- Run-Time Polymorphism (Function Overriding) ---
-Payment made using UPI.
-Payment made using Credit Card.
+-- Operator Overloading --
+c1 = 3 + 4i
+c2 = 1 + 2i
+c1 + c2 = 4 + 6i
 
-[Leaving scope - Destructors called in reverse order]:
-CreditCard destructor called
-Payment base destructor called
-UPI destructor called
-Payment base destructor called
+===== Runtime Polymorphism =====
+Generic Shape, Area = 0
+Circle (r = 5), Area = 78.5397
+Rectangle (4 x 6), Area = 24
+Triangle (b = 3, h = 8), Area = 12
 ```
-
 ---
 
 ## Assignment 8 – Exception Handling in C++
@@ -476,11 +481,11 @@ Bank Account Object Destroyed.
 | 6 | Multiple inheritance | SmartDevice inherits Camera & MusicPlayer | Pass (takePhoto() and playMusic() called) |
 | 6 | Hierarchical inheritance | Cat & Cow inherit from Animal | Pass (Shared category() with specialized sounds) |
 | 6 | Hybrid inheritance | Professor inherits Account via Teacher & Researcher | Pass (Resolved without ambiguity using virtual) |
-| 7 | Function overloading by parameter count | add(10, 20) vs add(10, 20, 30) | Pass (Sum 30 and 60 calculated) |
-| 7 | Function overloading by parameter type | add(5.5f, 4.5f) vs add(int, int) | Pass (Float addition 10 calculated) |
-| 7 | Run-time dispatch via base pointer (UPI) | Payment* -> UPI object | Pass ("Payment made using UPI.") |
-| 7 | Run-time dispatch via base pointer (CreditCard) | Payment* -> CreditCard object | Pass ("Payment made using Credit Card.") |
-| 7 | Virtual destructor invocation | UPI & CreditCard destructors | Pass (Derived and base destructors invoked cleanly in reverse) |
+| 7 | Function overloading | Calculator add() for int, double, and 3 params | Pass (Computed 30, 6, 6) |
+| 7 | Operator overloading | Complex operator+ (c1 + c2) | Pass (Result: 4 + 6i) |
+| 7 | Runtime polymorphism with Circle | Shape* -> Circle(5) | Pass (Area: 78.5397) |
+| 7 | Runtime polymorphism with Rectangle | Shape* -> Rectangle(4, 6) | Pass (Area: 24) |
+| 7 | Runtime polymorphism with Triangle | Shape* -> Triangle(3, 8) | Pass (Area: 12) |
 | 8 | Valid withdrawal transaction | Withdrawal amount Rs. 2000 from Rs. 5000 | Pass (Balance updated to Rs. 3000) |
 | 8 | Zero or negative amount validation | Withdrawal amount Rs. -500 | Pass (invalid_argument caught, balance unchanged) |
 | 8 | Insufficient balance validation | Withdrawal amount Rs. 8000 from Rs. 5000 | Pass (runtime_error caught, balance unchanged) |

@@ -1,112 +1,160 @@
 #include <iostream>
 using namespace std;
 
-// Real-life example: Financial calculator and unified payment gateway.
-// Concepts: Compile-time polymorphism (function overloading) and
-//           Run-time polymorphism (virtual functions, function overriding, base pointers).
-
-// ==============================================================
-// 1. COMPILE-TIME POLYMORPHISM (Function Overloading)
-// ==============================================================
+// Compile-time Polymorphism: Function Overloading
 class Calculator {
 public:
-    // Overload 1: Two integer parameters
     int add(int a, int b) {
         return a + b;
     }
 
-    // Overload 2: Two floating-point parameters (different parameter types)
-    float add(float a, float b) {
+    double add(double a, double b) {
         return a + b;
     }
 
-    // Overload 3: Three integer parameters (different parameter count)
     int add(int a, int b, int c) {
         return a + b + c;
     }
 };
 
+// Compile-time Polymorphism: Operator Overloading
+class Complex {
+    double real, imag;
 
-// ==============================================================
-// 2. RUN-TIME POLYMORPHISM (Function Overriding & Virtual Methods)
-// ==============================================================
-class Payment {
 public:
-    // Virtual function enables dynamic binding at runtime
-    virtual void makePayment() {
-        cout << "Processing payment..." << endl;
+    Complex(double r = 0, double i = 0)
+        : real(r), imag(i) {
     }
 
-    // Virtual destructor ensures complete cleanup in derived hierarchies
-    virtual ~Payment() {
-        cout << "Payment base destructor called" << endl;
+    Complex operator+(const Complex &other) const {
+        return Complex(
+            real + other.real,
+            imag + other.imag
+        );
+    }
+
+    void display() const {
+        cout << real << " + " << imag << "i" << endl;
     }
 };
 
-class UPI : public Payment {
+// Runtime Polymorphism
+class Shape {
 public:
-    void makePayment() override {
-        cout << "Payment made using UPI." << endl;
+    virtual double area() const {
+        return 0;
     }
 
-    ~UPI() override {
-        cout << "UPI destructor called" << endl;
+    virtual void show() const {
+        cout << "Generic Shape, Area = "
+             << area() << endl;
+    }
+
+    virtual ~Shape() {
     }
 };
 
-class CreditCard : public Payment {
+class Circle : public Shape {
+    double r;
+
 public:
-    void makePayment() override {
-        cout << "Payment made using Credit Card." << endl;
+    Circle(double radius) : r(radius) {
     }
 
-    ~CreditCard() override {
-        cout << "CreditCard destructor called" << endl;
+    double area() const override {
+        return 3.14159 * r * r;
+    }
+
+    void show() const override {
+        cout << "Circle (r = " << r
+             << "), Area = " << area() << endl;
     }
 };
 
+class Rectangle : public Shape {
+    double l, b;
 
-// ==============================================================
-// MAIN FUNCTION
-// ==============================================================
+public:
+    Rectangle(double length, double breadth)
+        : l(length), b(breadth) {
+    }
+
+    double area() const override {
+        return l * b;
+    }
+
+    void show() const override {
+        cout << "Rectangle (" << l << " x "
+             << b << "), Area = " << area() << endl;
+    }
+};
+
+class Triangle : public Shape {
+    double base, height;
+
+public:
+    Triangle(double b, double h)
+        : base(b), height(h) {
+    }
+
+    double area() const override {
+        return 0.5 * base * height;
+    }
+
+    void show() const override {
+        cout << "Triangle (b = " << base
+             << ", h = " << height
+             << "), Area = " << area() << endl;
+    }
+};
+
 int main() {
-    cout << "=== Demonstrating Polymorphism in C++ ===" << endl;
+    cout << "===== Compile-time Polymorphism =====" << endl;
 
-    // 1. Compile-Time Polymorphism
-    cout << "\n--- Compile-Time Polymorphism (Function Overloading) ---" << endl;
+    cout << "\n-- Function Overloading --" << endl;
 
-    Calculator c;
+    Calculator calc;
 
-    cout << "Addition of 2 integers (10 + 20)      : "
-         << c.add(10, 20) << endl;
+    cout << "add(10, 20) = "
+         << calc.add(10, 20) << endl;
 
-    cout << "Addition of 2 float numbers (5.5 + 4.5): "
-         << c.add(5.5f, 4.5f) << endl;
+    cout << "add(2.5, 3.5) = "
+         << calc.add(2.5, 3.5) << endl;
 
-    cout << "Addition of 3 integers (10 + 20 + 30)  : "
-         << c.add(10, 20, 30) << endl;
+    cout << "add(1, 2, 3) = "
+         << calc.add(1, 2, 3) << endl;
 
+    cout << "\n-- Operator Overloading --" << endl;
 
-    // 2. Run-Time Polymorphism
-    cout << "\n--- Run-Time Polymorphism (Function Overriding) ---" << endl;
+    Complex c1(3, 4), c2(1, 2), c3;
 
-    {
-        Payment *p = nullptr;
+    cout << "c1 = ";
+    c1.display();
 
-        UPI u;
-        CreditCard cc;
+    cout << "c2 = ";
+    c2.display();
 
-        // Base pointer points to UPI derived object
-        p = &u;
-        p->makePayment();
+    c3 = c1 + c2;
 
-        // Base pointer points to CreditCard derived object
-        p = &cc;
-        p->makePayment();
+    cout << "c1 + c2 = ";
+    c3.display();
 
-        cout << "\n[Leaving scope - Destructors called in reverse order]:" << endl;
+    cout << "\n===== Runtime Polymorphism =====" << endl;
+
+    Shape *shapes[4] = {
+        new Shape(),
+        new Circle(5),
+        new Rectangle(4, 6),
+        new Triangle(3, 8)
+    };
+
+    for (int i = 0; i < 4; i++) {
+        shapes[i]->show();
+    }
+
+    for (int i = 0; i < 4; i++) {
+        delete shapes[i];
     }
 
     return 0;
 }
-

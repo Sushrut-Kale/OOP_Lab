@@ -392,68 +392,55 @@ Triangle (b = 3, h = 8), Area = 12
 ```
 ---
 
-## Assignment 8 – Exception Handling in C++
+## Assignment 8 – Exception Handling
 
 **File:** `opp8.cpp`
 
-**Problem statement:** Implement a bank account management system demonstrating robust runtime exception handling using `try`, `throw`, and `catch` blocks with standard exceptions (`std::invalid_argument` and `std::runtime_error`):
-- Throw `std::invalid_argument` if the withdrawal amount entered is zero or negative (`amount <= 0`).
-- Throw `std::runtime_error` if the withdrawal amount exceeds the current account balance (`amount > balance`).
-- Catch both exceptions by reference (`const exception&`), display descriptive error messages using `.what()`, and ensure the account balance remains consistent and unaffected by rejected transactions.
+**Problem statement:** Implement a comprehensive C++ program demonstrating diverse exception handling techniques:
+1. `try`, `throw`, and `catch` with primitive types (`int` age check for eligibility).
+2. Throwing and catching `std::string` for division-by-zero detection.
+3. Custom user-defined exception class (`InvalidMarksException`) validating student marks (0–100).
+4. Standard library exceptions (`std::out_of_range`) from `<stdexcept>` for array bound checking.
+5. Re-throwing an exception using `throw;` to pass an exception from an inner to an outer handler.
+6. Multiple catch blocks with catch-all fallback (`catch (...)`).
 
 **Concepts used:**
 
-- Exception handling mechanism (`try`, `throw`, `catch`).
-- Standard exception hierarchy from `<stdexcept>`:
-  - `std::invalid_argument`: Derived from `std::logic_error` representing invalid input arguments.
-  - `std::runtime_error`: Represents errors detectable only at execution time.
-- Exception object inspection using member function `e.what()`.
-- State consistency: Ensuring transactions are atomic (balance is only modified upon full validation).
-- Destructor cleanup on normal termination or scope exit.
+- Fundamental exception control flow: `try`, `throw`, and `catch`.
+- Primitive exception throwing and type-matching.
+- User-defined exception classes with custom diagnostic member functions (`show()`).
+- Standard exceptions (`std::out_of_range`, `std::runtime_error`) and polymorphic catching with `const exception&`.
+- Re-throwing exceptions (`throw;`) for multi-level diagnostics.
+- Default catch-all handler (`catch (...)`) ensuring graceful fallback.
 
-**Sample runs:**
+**Sample run:**
 
-**Case 1: Successful Withdrawal**
 ```
-===== BANKING SYSTEM =====
-Current Balance: Rs. 5000
+===== 1. try, throw and catch (int) =====
+Access granted. Age is 20
+Access denied. Age is 15 (must be 18 or above)
 
-Enter amount to withdraw: Rs. 2000
-Withdrawal Successful!
-Withdrawn Amount: Rs. 2000
-Remaining Balance: Rs. 3000
+===== 2. Throwing a string =====
+10 / 2 = 5
+Exception caught: Division by zero is not allowed
 
-Final Account Details:
-Current Balance: Rs. 3000
-Bank Account Object Destroyed.
+===== 3. Custom exception class =====
+Marks 85 are valid
+Invalid marks entered: 120 (must be between 0 and 100)
+
+===== 4. Standard exception (out_of_range) =====
+arr[1] = 20
+Exception caught: Index 5 is out of range
+
+===== 5. Re-throwing an exception =====
+Inner catch: Error occurred in inner function
+Outer catch: Error occurred in inner function
+
+===== 6. Multiple catch blocks and catch-all =====
+Unknown (default) exception caught
+
+Program ended normally.
 ```
-
-**Case 2: Invalid Amount (Zero / Negative)**
-```
-===== BANKING SYSTEM =====
-Current Balance: Rs. 5000
-
-Enter amount to withdraw: Rs. -500
-Exception: Invalid amount! Enter a positive amount.
-
-Final Account Details:
-Current Balance: Rs. 5000
-Bank Account Object Destroyed.
-```
-
-**Case 3: Insufficient Balance**
-```
-===== BANKING SYSTEM =====
-Current Balance: Rs. 5000
-
-Enter amount to withdraw: Rs. 8000
-Exception: Insufficient balance! Withdrawal denied.
-
-Final Account Details:
-Current Balance: Rs. 5000
-Bank Account Object Destroyed.
-```
-
 ---
 
 ## Test Summary
@@ -486,10 +473,13 @@ Bank Account Object Destroyed.
 | 7 | Runtime polymorphism with Circle | Shape* -> Circle(5) | Pass (Area: 78.5397) |
 | 7 | Runtime polymorphism with Rectangle | Shape* -> Rectangle(4, 6) | Pass (Area: 24) |
 | 7 | Runtime polymorphism with Triangle | Shape* -> Triangle(3, 8) | Pass (Area: 12) |
-| 8 | Valid withdrawal transaction | Withdrawal amount Rs. 2000 from Rs. 5000 | Pass (Balance updated to Rs. 3000) |
-| 8 | Zero or negative amount validation | Withdrawal amount Rs. -500 | Pass (invalid_argument caught, balance unchanged) |
-| 8 | Insufficient balance validation | Withdrawal amount Rs. 8000 from Rs. 5000 | Pass (runtime_error caught, balance unchanged) |
-| 8 | Object destruction and state consistency | Destructor on exit | Pass (Bank Account Object Destroyed) |
+| 8 | Integer exception handling | checkAge(20) vs checkAge(15) | Pass (Access granted for 20, denied for 15) |
+| 8 | String exception on division by zero | divide(10, 0) | Pass (Caught: Division by zero is not allowed) |
+| 8 | Custom exception class | validateMarks(120) | Pass (InvalidMarksException caught and displayed) |
+| 8 | Standard exception (out_of_range) | getElement(arr, 3, 5) | Pass (Index 5 is out of range caught) |
+| 8 | Re-throwing exceptions | innerFunction() rethrows | Pass (Caught at inner and outer level) |
+| 8 | Catch-all handler | throw 3.14 (double) | Pass (Unknown/default exception caught) |
+
 
 ## Notes
 

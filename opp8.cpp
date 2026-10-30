@@ -1,81 +1,162 @@
 #include <iostream>
+#include <string>
 #include <stdexcept>
 using namespace std;
 
-// Real-life example: Banking transaction system with balance safeguards.
-// Concepts: Exception handling (try, throw, catch), standard exceptions
-//           (std::invalid_argument, std::runtime_error), and state consistency.
-
-class BankAccount {
-private:
-    double balance;
+// Custom Exception Class
+class InvalidMarksException {
+    int marks;
 
 public:
-    // Constructor
-    BankAccount(double b) {
-        balance = b;
+    InvalidMarksException(int m) : marks(m) {
     }
 
-    // Function to withdraw money with exception handling
-    void withdraw(double amount) {
-        try {
-            // Throw invalid_argument exception for zero or negative amounts
-            if (amount <= 0) {
-                throw invalid_argument(
-                    "Invalid amount! Enter a positive amount."
-                );
-            }
-
-            // Throw runtime_error exception when balance is insufficient
-            if (amount > balance) {
-                throw runtime_error(
-                    "Insufficient balance! Withdrawal denied."
-                );
-            }
-
-            balance = balance - amount;
-
-            cout << "Withdrawal Successful!" << endl;
-            cout << "Withdrawn Amount: Rs. " << amount << endl;
-            cout << "Remaining Balance: Rs. " << balance << endl;
-        }
-        catch (const invalid_argument &e) {
-            cout << "Exception: " << e.what() << endl;
-        }
-        catch (const runtime_error &e) {
-            cout << "Exception: " << e.what() << endl;
-        }
-    }
-
-    // Display balance
-    void displayBalance() const {
-        cout << "Current Balance: Rs. " << balance << endl;
-    }
-
-    // Destructor
-    ~BankAccount() {
-        cout << "Bank Account Object Destroyed." << endl;
+    void show() const {
+        cout << "Invalid marks entered: " << marks
+             << " (must be between 0 and 100)"
+             << endl;
     }
 };
 
+// Functions that throw exceptions
+void checkAge(int age) {
+    if (age < 18) {
+        throw age;
+    }
+
+    cout << "Access granted. Age is "
+         << age << endl;
+}
+
+int divide(int a, int b) {
+    if (b == 0) {
+        throw string("Division by zero is not allowed");
+    }
+
+    return a / b;
+}
+
+void validateMarks(int marks) {
+    if (marks < 0 || marks > 100) {
+        throw InvalidMarksException(marks);
+    }
+
+    cout << "Marks " << marks
+         << " are valid" << endl;
+}
+
+int getElement(const int arr[], int size, int index) {
+    if (index < 0 || index >= size) {
+        throw out_of_range(
+            "Index " + to_string(index) + " is out of range"
+        );
+    }
+
+    return arr[index];
+}
+
+// Re-throwing an exception
+void innerFunction() {
+    try {
+        throw runtime_error("Error occurred in inner function");
+    }
+    catch (const runtime_error &e) {
+        cout << "Inner catch: " << e.what() << endl;
+        throw;
+    }
+}
+
 int main() {
-    double amount;
+    cout << "===== 1. try, throw and catch (int) ====="
+         << endl;
 
-    // Create bank account with initial deposit
-    BankAccount account(5000);
+    try {
+        checkAge(20);
+    }
+    catch (int myNum) {
+        cout << "Access denied. Age is " << myNum
+             << " (must be 18 or above)" << endl;
+    }
 
-    cout << "===== BANKING SYSTEM =====" << endl;
-    account.displayBalance();
+    try {
+        checkAge(15);
+    }
+    catch (int myNum) {
+        cout << "Access denied. Age is " << myNum
+             << " (must be 18 or above)" << endl;
+    }
 
-    cout << "\nEnter amount to withdraw: Rs. ";
-    cin >> amount;
+    cout << "\n===== 2. Throwing a string =====" << endl;
 
-    // Withdraw money (validated using exception handling)
-    account.withdraw(amount);
+    try {
+        int r1 = divide(10, 2);
+        cout << "10 / 2 = " << r1 << endl;
 
-    cout << "\nFinal Account Details:" << endl;
-    account.displayBalance();
+        int r2 = divide(10, 0);
+        cout << "10 / 0 = " << r2 << endl;
+
+        cout << "This line is never executed" << endl;
+    }
+    catch (const string &msg) {
+        cout << "Exception caught: " << msg << endl;
+    }
+
+    cout << "\n===== 3. Custom exception class ====="
+         << endl;
+
+    try {
+        validateMarks(85);
+        validateMarks(120);
+    }
+    catch (const InvalidMarksException &e) {
+        e.show();
+    }
+
+    cout << "\n===== 4. Standard exception (out_of_range) ====="
+         << endl;
+
+    int arr[3] = {10, 20, 30};
+
+    try {
+        int v1 = getElement(arr, 3, 1);
+        cout << "arr[1] = " << v1 << endl;
+
+        int v2 = getElement(arr, 3, 5);
+        cout << "arr[5] = " << v2 << endl;
+    }
+    catch (const exception &e) {
+        cout << "Exception caught: "
+             << e.what() << endl;
+    }
+
+    cout << "\n===== 5. Re-throwing an exception ====="
+         << endl;
+
+    try {
+        innerFunction();
+    }
+    catch (const exception &e) {
+        cout << "Outer catch: " << e.what() << endl;
+    }
+
+    cout << "\n===== 6. Multiple catch blocks and catch-all ====="
+         << endl;
+
+    try {
+        throw 3.14;
+    }
+    catch (int) {
+        cout << "Integer exception caught" << endl;
+    }
+    catch (string) {
+        cout << "String exception caught" << endl;
+    }
+    catch (...) {
+        cout << "Unknown (default) exception caught"
+             << endl;
+    }
+
+    cout << "\nProgram ended normally." << endl;
 
     return 0;
 }
-

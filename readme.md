@@ -24,6 +24,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp6.cpp     # Assignment 6 – Types of Inheritance in C++
 ├── opp7.cpp     # Assignment 7 – Polymorphism (Compile-Time and Run-Time)
 ├── opp8.cpp     # Assignment 8 – Exception Handling (try, throw, catch)
+├── opp9.cpp     # Assignment 9 – std::move() and Move Semantics
 └── readme.md
 ```
 
@@ -58,6 +59,9 @@ g++ opp7.cpp -o opp7 && ./opp7
 
 # Assignment 8
 g++ opp8.cpp -o opp8 && ./opp8
+
+# Assignment 9
+g++ -std=c++11 opp9.cpp -o opp9 && ./opp9
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -443,6 +447,54 @@ Program ended normally.
 ```
 ---
 
+## Assignment 9 – std::move() and Move Semantics
+
+**File:** `opp9.cpp`
+
+**Problem statement:** Implement a program demonstrating move semantics and `std::move()` in modern C++:
+1. Moving `std::string` resources to eliminate deep string copying.
+2. Moving `std::vector` to transfer heap-allocated dynamic array ownership in $O(1)$ time.
+3. Designing a custom `Buffer` class featuring deep-copy constructor vs noexcept move constructor, comparing memory allocations and post-move object states.
+
+**Concepts used:**
+
+- Lvalues vs Rvalues and Rvalue References (`Type&&`).
+- Resource acquisition and transfer via `std::move` (converting lvalues to rvalue references).
+- Move constructors marked with `noexcept` to ensure exception-safe move semantics.
+- Stealing resource pointers (`other.data = nullptr; other.size = 0;`) to avoid expensive heap allocations.
+- State of moved-from objects.
+
+**Sample run:**
+
+```
+===== 1. std::move with string =====
+
+Before moving:
+str1 = Hello, C++ Programming
+
+After moving:
+str1 = 
+str2 = Hello, C++ Programming
+
+===== 2. std::move with vector =====
+Before moving: v1.size() = 5
+After moving: v1.size() = 0, v2.size() = 5
+
+===== 3. Copy constructor vs Move constructor =====
+Constructor: allocated 5 ints
+Copy constructor: copied 5 ints
+Move constructor: moved 5 ints (no copy)
+
+Buffer sizes after operations:
+b1 size = 0
+b2 size = 5
+b3 size = 5
+
+Program ended successfully.
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -479,6 +531,10 @@ Program ended normally.
 | 8 | Standard exception (out_of_range) | getElement(arr, 3, 5) | Pass (Index 5 is out of range caught) |
 | 8 | Re-throwing exceptions | innerFunction() rethrows | Pass (Caught at inner and outer level) |
 | 8 | Catch-all handler | throw 3.14 (double) | Pass (Unknown/default exception caught) |
+| 9 | std::move with std::string | Move str1 to str2 | Pass (str2 receives string, str1 emptied) |
+| 9 | std::move with std::vector | Move v1 to v2 | Pass (v2 size 5, v1 size 0) |
+| 9 | Copy constructor (deep copy) | Buffer b2 = b1 | Pass (Copied 5 ints, independent buffer allocated) |
+| 9 | Move constructor (ownership transfer) | Buffer b3 = std::move(b1) | Pass (Moved 5 ints without allocation, b1 size 0) |
 
 
 ## Notes

@@ -25,6 +25,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp7.cpp     # Assignment 7 – Polymorphism (Compile-Time and Run-Time)
 ├── opp8.cpp     # Assignment 8 – Exception Handling (try, throw, catch)
 ├── opp9.cpp     # Assignment 9 – std::move() and Move Semantics
+├── opp10.cpp    # Assignment 10 – Function and Class Templates
 └── readme.md
 ```
 
@@ -62,6 +63,9 @@ g++ opp8.cpp -o opp8 && ./opp8
 
 # Assignment 9
 g++ -std=c++11 opp9.cpp -o opp9 && ./opp9
+
+# Assignment 10
+g++ opp10.cpp -o opp10 && ./opp10
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -495,6 +499,67 @@ Program ended successfully.
 
 ---
 
+## Assignment 10 – Function and Class Templates
+
+**File:** `opp10.cpp`
+
+**Problem statement:** Implement generic programming in C++ using function templates and class templates:
+1. Function template `maximum()` to compute the greater of two elements across multiple types (`int`, `double`, `char`, `std::string`).
+2. Function template `swapValues()` using pass-by-reference to swap values of generic types.
+3. Function template `showPair()` accepting two distinct template type parameters (`template <typename T, typename U>`).
+4. Class template `Calculator<T>` supporting arithmetic operations (`add`, `subtract`, `multiply`, `divide`) for `int` and `double`.
+5. Class template `Stack<T>` implementing a generic fixed-capacity LIFO stack with `push()`, `pop()`, and `isEmpty()`.
+
+**Concepts used:**
+
+- Generic programming and parameterized types with `template <typename T>`.
+- Function templates and template argument deduction.
+- Multiple type parameters (`typename T, typename U`).
+- Class template instantiation with concrete types (`Calculator<int>`, `Calculator<double>`, `Stack<int>`).
+- LIFO data structure operations using templates.
+
+**Sample run:**
+
+```
+===== 1. Function template: maximum() =====
+maximum(10, 20) = 20
+maximum(3.5, 2.1) = 3.5
+maximum('a', 'z') = z
+maximum("apple", "banana") = banana
+
+===== 2. Function template: swapValues() =====
+Before swap: x = 5, y = 10
+After swap: x = 10, y = 5
+
+Before swap: s1 = Hello, s2 = World
+After swap: s1 = World, s2 = Hello
+
+===== 3. Function template with two types =====
+Pair: (1, Apple)
+Pair: (2.5, A)
+
+===== 4. Class template: Calculator<T> =====
+Calculator<int>(20, 4):
+add = 24
+subtract = 16
+multiply = 80
+divide = 5
+
+Calculator<double>(7.5, 2.5):
+add = 10
+subtract = 5
+multiply = 18.75
+divide = 3
+
+===== 5. Class template: Stack<T> =====
+Popped: 30
+Popped: 20
+Popped: 10
+Stack is empty
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -535,6 +600,11 @@ Program ended successfully.
 | 9 | std::move with std::vector | Move v1 to v2 | Pass (v2 size 5, v1 size 0) |
 | 9 | Copy constructor (deep copy) | Buffer b2 = b1 | Pass (Copied 5 ints, independent buffer allocated) |
 | 9 | Move constructor (ownership transfer) | Buffer b3 = std::move(b1) | Pass (Moved 5 ints without allocation, b1 size 0) |
+| 10 | Function template maximum() | int, double, char, string | Pass (20, 3.5, 'z', "banana" returned) |
+| 10 | Generic pass-by-reference swap | int and string variables | Pass (Values swapped successfully) |
+| 10 | Multiple type template showPair() | (1, "Apple") and (2.5, 'A') | Pass (Heterogeneous pairs displayed) |
+| 10 | Class template Calculator<T> | Calculator<int> and Calculator<double> | Pass (Arithmetic operations verified) |
+| 10 | Class template Stack<T> | Push 10, 20, 30 and pop | Pass (LIFO order 30, 20, 10, stack empty) |
 
 
 ## Notes

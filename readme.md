@@ -27,6 +27,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp9.cpp     # Assignment 9 – std::move() and Move Semantics
 ├── opp10.cpp    # Assignment 10 – Function and Class Templates
 ├── opp11.cpp    # Assignment 11 – STL: List and Vector Containers
+├── opp12.cpp    # Assignment 12 – Type Casting and Casting Operators
 └── readme.md
 ```
 
@@ -70,6 +71,9 @@ g++ opp10.cpp -o opp10 && ./opp10
 
 # Assignment 11
 g++ opp11.cpp -o opp11 && ./opp11
+
+# Assignment 12
+g++ opp12.cpp -o opp12 && ./opp12
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -608,6 +612,53 @@ After clear(): size = 0, empty = Yes
 
 ---
 
+## Assignment 12 – Type Casting and Casting Operators
+
+**File:** `opp12.cpp`
+
+**Problem statement:** Implement a comprehensive C++ program demonstrating all four modern C++ explicit type casting operators:
+1. `static_cast`: Safe conversions between arithmetic types (`int` to `double`, `double` to `int`, `char` to `int`, `int` to `char`) and compile-time hierarchy downcasts.
+2. `dynamic_cast`: Safe runtime polymorphic downcasting on polymorphic types (`Base*` to `Derived*`), inspecting `NULL` on pointer cast failure and handling `std::bad_cast` exception on reference cast failure.
+3. `const_cast`: Removing `const` qualification safely to modify a variable that was originally declared non-const.
+4. `reinterpret_cast`: Low-level bitwise reinterpretation of memory addresses (`int*` to `char*` inspecting first byte).
+
+**Concepts used:**
+
+- Modern C++ explicit casting operators (`static_cast`, `dynamic_cast`, `const_cast`, `reinterpret_cast`).
+- Runtime Type Information (RTTI) and `<typeinfo>`.
+- Polymorphic downcasting safety: pointer check against `NULL` vs reference exception handling (`std::bad_cast`).
+- Const-correctness and safe use of `const_cast`.
+- Memory representation and byte-level pointer reinterpretation.
+
+**Sample run:**
+
+```
+===== 1. static_cast =====
+Without cast : 7 / 2 = 3
+With cast    : 7 / 2 = 3.5
+double 9.99 to int : 9
+char 'A' to int : 65
+int 97 to char : a
+Derived-only function called
+
+===== 2. dynamic_cast =====
+Cast of b1 succeeded: Derived-only function called
+Cast of b2 failed: dynamic_cast returned NULL
+Reference cast succeeded: Derived-only function called
+
+===== 3. const_cast =====
+Original value = 50
+Modified value = 100
+
+===== 4. reinterpret_cast =====
+Integer value = 65
+First byte as character = A
+
+Program ended successfully.
+```
+
+---
+
 ## Test Summary
 
 | Assignment | Test | Input | Result |
@@ -656,6 +707,11 @@ After clear(): size = 0, empty = Yes
 | 11 | std::list operations | push_front, push_back, sort, reverse, insert, remove | Pass (Final size 2, elements: 40 30) |
 | 11 | std::vector access & algorithms | push_back, at(), sort, reverse, find | Pass (Element 10 found at index 2) |
 | 11 | std::vector insert, erase, sum | insert(1, 20), erase(begin), sum elements | Pass (Sum 45, clear verified) |
+| 12 | static_cast conversions | Primitive type casts & downcast | Pass (Exact arithmetic conversions & downcast) |
+| 12 | dynamic_cast pointer safety | b1 (Derived) vs b2 (Base) | Pass (b1 succeeded, b2 returned NULL) |
+| 12 | dynamic_cast reference safety | Base& to Derived& | Pass (Reference cast succeeded via RTTI) |
+| 12 | const_cast modification | const int* pointing to non-const int | Pass (Value safely modified 50 -> 100) |
+| 12 | reinterpret_cast memory inspection | int* to char* inspection | Pass (Integer 65 first byte 'A') |
 
 
 ## Notes

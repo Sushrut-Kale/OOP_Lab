@@ -22,6 +22,7 @@ This repository contains the C++ programs for the practical assignments, along w
 ├── opp4.cpp     # Assignment 4 – Dynamic Memory Allocation (new & delete)
 ├── opp5.cpp     # Assignment 5 – this Pointer, Inline & Static Members, Friend Class
 ├── opp6.cpp     # Assignment 6 – Types of Inheritance in C++
+├── opp7.cpp     # Assignment 7 – Polymorphism (Compile-Time and Run-Time)
 └── readme.md
 ```
 
@@ -50,6 +51,9 @@ g++ opp5.cpp -o opp5 && ./opp5
 
 # Assignment 6
 g++ opp6.cpp -o opp6 && ./opp6
+
+# Assignment 7
+g++ opp7.cpp -o opp7 && ./opp7
 ```
 
 On Windows (PowerShell / CMD) run the executable as `opp1.exe` instead of `./opp1`.
@@ -354,6 +358,44 @@ University: MIT Pune
 Department: Computer Science
 Research Area: Artificial Intelligence
 ```
+
+---
+
+## Assignment 7 – Polymorphism (Compile-Time and Run-Time)
+
+**File:** `opp7.cpp`
+
+**Problem statement:** Implement a C++ program demonstrating both forms of polymorphism:
+- **Compile-Time Polymorphism (Static Binding):** Function overloading in a `Calculator` class providing multiple definitions of `add()` differing in parameter count (2 integers vs 3 integers) and parameter types (`int` vs `float`), resolved at compile time.
+- **Run-Time Polymorphism (Dynamic Binding):** Function overriding using a base class `Payment` with a `virtual void makePayment()` function and a `virtual` destructor, overridden in derived classes `UPI` and `CreditCard`. Base class pointers (`Payment*`) dynamically dispatch calls to the appropriate derived class method at runtime based on the actual object being pointed to.
+
+**Concepts used:**
+
+- Static binding / early binding: Compiler selects the overloaded function based on argument types and count.
+- Dynamic binding / late binding: Virtual function mechanism with dynamic dispatch via virtual method table (`vptr`/`vtbl`).
+- Keywords `virtual` and `override`: `virtual` enables polymorphic behavior; `override` guarantees compile-time verification of signature compatibility.
+- Virtual destructors: Ensures derived class destructors are properly invoked when objects are managed through base class pointers.
+- Unified interface: Manipulating multiple heterogeneous derived objects through a common base pointer (`Payment*`).
+
+**Sample run:**
+
+```
+=== Demonstrating Polymorphism in C++ ===
+
+--- Compile-Time Polymorphism (Function Overloading) ---
+Addition of 2 integers (10 + 20)      : 30
+Addition of 2 float numbers (5.5 + 4.5): 10
+Addition of 3 integers (10 + 20 + 30)  : 60
+
+--- Run-Time Polymorphism (Function Overriding) ---
+Payment made using UPI.
+Payment made using Credit Card.
+
+[Leaving scope - Destructors called in reverse order]:
+CreditCard destructor called
+Payment base destructor called
+UPI destructor called
+Payment base destructor called
 ```
 
 ---
@@ -384,6 +426,11 @@ Research Area: Artificial Intelligence
 | 6 | Hierarchical inheritance | Animal eats, Dog barks, Cat meows | Pass (Distinct derived behaviors from shared base) |
 | 6 | Hybrid inheritance (Multilevel + Multiple) | ScoreCard Roll 101, 45, 48, 18 | Pass (Grand total 111 verified) |
 | 6 | Multipath inheritance (Diamond problem) | Professor Dr. Sharma, MIT Pune | Pass (Virtual base class prevents duplicate UniversityMember) |
+| 7 | Function overloading by parameter count | add(10, 20) vs add(10, 20, 30) | Pass (Sum 30 and 60 calculated) |
+| 7 | Function overloading by parameter type | add(5.5f, 4.5f) vs add(int, int) | Pass (Float addition 10 calculated) |
+| 7 | Run-time dispatch via base pointer (UPI) | Payment* -> UPI object | Pass ("Payment made using UPI.") |
+| 7 | Run-time dispatch via base pointer (CreditCard) | Payment* -> CreditCard object | Pass ("Payment made using Credit Card.") |
+| 7 | Virtual destructor invocation | UPI & CreditCard destructors | Pass (Derived and base destructors invoked cleanly in reverse) |
 
 ## Notes
 
